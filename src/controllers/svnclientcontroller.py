@@ -3,9 +3,10 @@ import os
 import subprocess
 import logging
 import time
+import sys
 logging.basicConfig(level=logging.DEBUG)
-# from_merge_branch = os.environ['BRANCH']
-from_merge_branch = 'http://192.168.23.133:8081/svn/test/branches/jumore-wk37.w1c1'
+from_merge_branch = os.environ['BRANCH']
+# from_merge_branch = 'http://192.168.23.133:8081/svn/test/branches/jumore-wk37.w1c1'
 #===============================================================================
 # 通过注释，判断是否合并到release发布分支 
 #===============================================================================
@@ -24,6 +25,11 @@ def mergeDecide():
         print data_list
         if provide_commit_message in data_list:
             mergeBranch()
+#===============================================================================
+# 后续功能：去同步数据状态是否冲突状态，如果冲突 状态不执行merge
+#===============================================================================
+#         if task_status == '0':
+#             print "不能执行mergeＢｒａｎｃｈ合并操作"
         logging.info(merge_info)     
     except Exception,e:
          print e  
@@ -66,16 +72,16 @@ def mergeBranch():
                 file = status_list.split(" ")[-1]
                 svnConflict(file)
             if 'Summary of conflicts' in status_list:
-                print "Summary of conflicts"
+                print "Summary of conflicts"               
                 break
-#             return 'fail'
         else:
+            print "push origing start--------"
             push_origin = os.popen('svn commit -m "merge from %s@%s@%s@%s"' %(from_merge_branch,last_author,last_commit,last_date)).readlines()
             logging.info('push_origin ok')
 #             return "ok"
     except ValueError as e:
 #     except  merge_branch_error:
-            print 'e'
+            sys.exit(1)
 def svnCommit(merge_from_url,):
     try:
         merge_info = os.popen('svn commit -m %s' %()).readlines()

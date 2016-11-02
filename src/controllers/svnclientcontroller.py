@@ -6,6 +6,7 @@ import time
 import sys
 logging.basicConfig(level=logging.DEBUG)
 from_merge_branch = os.environ['BRANCH']
+svn_message = os.environ['MESSAGE']
 # from_merge_branch = 'http://192.168.23.133:8081/svn/test/branches/jumore-wk37.w1c1'
 #===============================================================================
 # 通过注释，判断是否合并到release发布分支 
@@ -38,6 +39,7 @@ def mergeBranch():
     try:
         list = []
         merge_update_info = os.popen('svn update').readlines()
+        merge_upgrade = os.popen('svn upgrade').readlines()
         logging.info(merge_update_info)
         merge_info_list = os.popen('svn info %s' %(from_merge_branch)).readlines()
         logging.info(merge_info_list)
@@ -76,7 +78,7 @@ def mergeBranch():
                 break
         else:
             print "push origing start--------"
-            push_origin = os.popen('svn commit -m "merge from %s@%s@%s@%s"' %(from_merge_branch,last_author,last_commit,last_date)).readlines()
+            push_origin = os.popen('svn commit -m "%s %s@%s@%s@%s"' %(svn_message,from_merge_branch,last_author,last_commit,last_date)).readlines()
             logging.info('push_origin ok')
 #             return "ok"
     except ValueError as e:

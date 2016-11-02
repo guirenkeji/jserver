@@ -8,6 +8,7 @@ logging.basicConfig(level=logging.DEBUG)
 from_merge_branch = os.environ['BRANCH']
 svn_message = os.environ['MESSAGE']
 # from_merge_branch = 'http://192.168.23.133:8081/svn/test/branches/jumore-wk37.w1c1'
+# svn_message = 'merge from'
 #===============================================================================
 # 通过注释，判断是否合并到release发布分支 
 #===============================================================================
@@ -46,7 +47,6 @@ def mergeBranch():
         for i in merge_info_list :
             if i !='\n':
                 i = i.strip('\n')
-                print i
                 p =i.split(':',1)
                 list.append(p)
 #============================================================================
@@ -74,8 +74,11 @@ def mergeBranch():
                 file = status_list.split(" ")[-1]
                 svnConflict(file)
             if 'Summary of conflicts' in status_list:
-                print "Summary of conflicts"               
-                break
+#===============================================================================
+# 有冲突，revert merge branch conflict             
+#===============================================================================
+                merge_revert = os.popen('svn revert -R .').readlines()
+                raise ValueError,"merge_branch_conflicts :"+ 'Summary of conflicts'
         else:
             print "push origing start--------"
             push_origin = os.popen('svn commit -m "%s %s@%s@%s@%s"' %(svn_message,from_merge_branch,last_author,last_commit,last_date)).readlines()
@@ -83,6 +86,7 @@ def mergeBranch():
 #             return "ok"
     except ValueError as e:
 #     except  merge_branch_error:
+            print e
             sys.exit(1)
 def svnCommit(merge_from_url,):
     try:
@@ -98,7 +102,7 @@ def svnContlictLog(log_list,file):
         for i in log_list:
             i = i.strip('\n')
             data_list.append(i) 
-        print data_list      
+#         print data_list      
         data_list = data_list[1]
         logging.info(data_list)
 #===============================================================================

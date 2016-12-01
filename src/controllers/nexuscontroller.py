@@ -36,13 +36,13 @@ def deleteFile():
                              %s/content/repositories/pro/com_acme_widgets/ ' )
     logging.info(delete_file)
     return delete_file
+
 #===============================================================================
 # 解析xml表达式匹配。后续repos可能有多层。目前定义3层，layer1为项目，layer2为模块，layer3为版本及文件
 #===============================================================================
 def nexusMetaAnalysis (nexus_metadata,layer2):
     file_info_list = []
     c1 = []
-    file_last_modified = ''
     metadata_tuple = xmlAnalysis(nexus_metadata)
     for i in metadata_tuple:
         if 'false' in i:
@@ -86,6 +86,9 @@ def xmlAnalysis(nexus_metadata):
     for i in nexus_metadata:
         metadata_list.append(i.strip('\n').strip())
     metadata_str = ''.join(metadata_list)
+#===============================================================================
+# 表达式匹配    
+#===============================================================================
     metadata_tuple= re.compile(r"(?<=<resourceURI>)(.*?)(?=</resourceURI>).+?(?<=<text>)(.*?)(?=</text>).+?(?<=<leaf>)(.*?)(?=</leaf>).+?(?<=<lastModified>)(.*?)(?=</lastModified>).+?(?<=<sizeOnDisk>)(.*?)(?=</sizeOnDisk>)") 
     metadata_tuple = metadata_tuple.findall(metadata_str)
     return  metadata_tuple        

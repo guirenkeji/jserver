@@ -25,9 +25,9 @@ def pushToNexus ():
 def downloadFromNexus ():
     data = request.get_json()
     for i in AGENT_IP:
-        httpPushPost (i,data)
-    httpDownloadPost(data)
-  
+        ip = i.split('-')[0]
+        label = i.split('-')[1]
+        httpDownloadPost(ip,data)
 def httpPushPost (agent_ip,agent_port,data):
     try:
         data = json.dumps(data)
@@ -50,23 +50,7 @@ def httpDownloadPost (agent_ip,agent_port,data):
     
     except Exception, e:
         print e   
-# def delete_file():
-#     delete_file = os.popen('curl -X  DELETE \
-#                             -u %s:%s \
-#                              %s/content/repositories/pro/com_acme_widgets/ ' %(username,password,nexus_repos_url))
-#     logging.info(delete_file)
-#     return (delete_file)
-#===============================================================================
-# http://192.168.23.133:9002/nexus/content/repositories/pro/com_acme_widgets/disconf-tool/2.6.28/disconf-tool-2.6.28.zip
-#===============================================================================
-
-# def get_nexus_info():
-#     file_list = os.popen('curl -X  DELETE \
-#                             -u admin:admin123 \
-#                             http://192.168.23.133:9002/nexus/content/repositories/pro/com_acme_widgets/ --connect-timeout 10 ').readlines()
-#                             
-#     logging.info(file_list)
-#     print dir(file_list)                 
+               
 if __name__ ==  '__main__':
     print '5555555'
 #     pushToNexus()

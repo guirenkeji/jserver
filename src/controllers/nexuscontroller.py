@@ -25,10 +25,10 @@ def getNexusMetadata (par=None):
 #===============================================================================
 # sql表获取服务配置参数    
 #===============================================================================
-    nexus_login_config =  server.nexus_login_c()
-    nexus_user = nexus_login_config['nexus_user']
-    nexus_password = nexus_login_config['nexus_password']
-    nexus_url = nexus_login_config['nexus_url']
+    nexus_login =  server.nexusCA()
+    nexus_user = nexus_login['nexus_user']
+    nexus_password = nexus_login['nexus_password']
+    nexus_url = nexus_login['nexus_url']
     nexus_metadata = os.popen('curl -v \
                         -u %s:%s \
                         %s/service/local/repositories/pro/content/%s/%s/ \
@@ -39,10 +39,10 @@ def getNexusMetadata (par=None):
 @nexusServer.route('/nexus/1.0/package/delete',methods=['POST'])
 def deleteFile():
     package_id = request.josn['package_id']
-    nexus_login_config =  server.nexus_login_c()
-    nexus_user = nexus_login_config['nexus_user']
-    nexus_password = nexus_login_config['nexus_password']
-    nexus_url = nexus_login_config['nexus_url']
+    nexus_login =  server.nexusCA()
+    nexus_user = nexus_login['nexus_user']
+    nexus_password = nexus_login['nexus_password']
+    nexus_url = nexus_login['nexus_url']
     delete_file = os.popen('curl -X  DELETE \
                             -u %s:%s \
                              %s/content/repositories/pro/com_acme_widgets/' %(nexus_user,nexus_password,nexus_url)).readlines() 

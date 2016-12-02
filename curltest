@@ -14,6 +14,7 @@ curl -X cp -u admin:admin123 http://192.168.23.202:9002/nexus/content/repositori
 curl -i -X POST -H "Content-Type: application/json" -d'{"nexus_repos_url":"http://192.168.23.133:9002/nexus","username":"admin","password":"admin123","file_name":"war.zip","r":"pro","g":"com_acme_widgets","a":"disconf-tool","v":"2.6.30","p":"zip","file_path" :" D:/tool","label":"1"}' http://192.168.23.238:5015/nexus/1.0/push
 curl -i -X POST -H "Content-Type: application/json" -d'{"username":"fulisheng","password":"1234567890"}' http://192.168.23.238:5016/agent/nexus/1.0/meta
 curl -i -X POST -H "Content-Type: application/json" -d'{"username":"fulisheng","password":"1234567890"}' http://192.168.23.238:5015/nexus/1.0/meta
+curl -i -X POST -H "Content-Type: application/json" -d'{"username":"fulisheng"}' http://192.168.23.238:5015/nexus/1.0/package/delete
 
 <content-item>
 <resourceURI>http://192.168.23.133:9002/nexus/service/local/repositories/pro/content/com_acme_widgets/</resourceURI>

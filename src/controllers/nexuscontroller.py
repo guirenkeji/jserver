@@ -4,6 +4,7 @@ from src.agentconfig import *
 import os
 import logging
 import json
+from src.services.component import server
 import httplib
 import re
 import operator
@@ -21,19 +22,30 @@ def getNexusMetadata (par=None):
 #     nexus_repos_url = request.json['nexus_repos_url']
     layer1 = 'com_acme2'
     layer2 = 'disconf-tool'
+#===============================================================================
+# sql表获取服务配置参数    
+#===============================================================================
+    nexus_login_config =  server.nexus_login_c()
+    nexus_user = nexus_login_config['nexus_user']
+    nexus_password = nexus_login_config['nexus_password']
+    nexus_url = nexus_login_config['nexus_url']
     nexus_metadata = os.popen('curl -v \
-                        -u admin:admin123 \
-                        http://192.168.23.133:9002/nexus/service/local/repositories/pro/content/%s/%s/ --connect-timeout 10 ' %(layer1,layer2)).readlines() 
+                        -u %s:%s \
+                        %s/service/local/repositories/pro/content/%s/%s/ \
+                        --connect-timeout 10 ' %(nexus_user,nexus_password,nexus_url,layer1,layer2)).readlines() 
     metadata_list = nexusMetaAnalysis(nexus_metadata,layer2)
     logging.info(metadata_list)
     return jsonify({'status':'ok','data':metadata_list})  
 @nexusServer.route('/nexus/1.0/package/delete',methods=['POST'])
 def deleteFile():
     package_id = request.josn['package_id']
-    
+    nexus_login_config =  server.nexus_login_c()
+    nexus_user = nexus_login_config['nexus_user']
+    nexus_password = nexus_login_config['nexus_password']
+    nexus_url = nexus_login_config['nexus_url']
     delete_file = os.popen('curl -X  DELETE \
                             -u %s:%s \
-                             %s/content/repositories/pro/com_acme_widgets/ ' )
+                             %s/content/repositories/pro/com_acme_widgets/' %(nexus_user,nexus_password,nexus_url)).readlines() 
     logging.info(delete_file)
     return delete_file
 
@@ -77,7 +89,7 @@ def nexusFileSide (file_url,version):
     for i in  metadata_tuple:
         if i[1].split('.')[-1] in ['zip','jar','war','exe','gz','rar','tar']:
 #===============================================================================
-# 定为nexus时间格式。0 UTC    
+# 定为nexus时间格式.0 UTC    
 #===============================================================================
             file_info = {'file_url':i[0],'file_name':i[1],'file_updatetime':i[3].split('.0 UTC')[0],'file_size':float(i[4])/(1024*1024)}
     return file_info

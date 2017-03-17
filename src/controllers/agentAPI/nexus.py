@@ -23,6 +23,9 @@ def pushToNexus ():
         httpPushPost (ip,data)
 @nexus.route('/agentAPI/nexus/1.0/pull',methods=['POST'])
 def downloadFromNexus ():
+#===============================================================================
+# 缺省值下载最近版本，判断下载包版本
+#===============================================================================
     data = request.get_json()
     for i in AGENT_IP:
         ip = i.split('-')[0]

@@ -7,7 +7,9 @@ def create_agent_app ():
     app.jinja_env.variable_end_string = '))'
     app.config.from_pyfile('agentconfig.py')
 #     app.register_module(svn_repo_info)
+    app.register_module(dashboard)
     app.register_module(zentao)
     app.register_module(nexusServer)
     app.register_module(nexus)
+    app.register_module(post)
     return app

@@ -1,0 +1,8 @@
+svn-0.3.42
+SQLAlchemy 1.1.4
+redis-2.10.5
+redis-py-cluster-1.3.2
+uwsgi-2.0.14
+docker-py-1.10.6
+flask-restplus-0.10.1
+Flask-SQLAlchemy-2.2

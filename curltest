@@ -24,4 +24,7 @@ curl -i -X POST -H "Content-Type: application/json" -d'{"username":"fulisheng"}'
 <lastModified>2016-11-09 13:56:52.0 UTC</lastModified>
 <sizeOnDisk>-1</sizeOnDisk>
 </content-item>
-
+#docker registry v2 api
+curl http://192.168.23.251:5000/v2/_catalog
+curl -H "Accept: application/vnd.docker.distribution.manifest.v2+json" http://192.168.23.251:5000/v2/d-dcos/manifests/test1
+curl -i -X -H "Content-Type: application/vnd.docker.distribution.manifest.v2+json" http://192.168.23.251:5000/v2/d-dcos/manifests/test1

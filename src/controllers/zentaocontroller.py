@@ -24,8 +24,8 @@ def login():
     cj=cookielib.CookieJar()                 
     opener=urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))                
     headers ={"User-agent":"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1"} 
-    website = "http://zt.jm.com/zentao/user-login.json" 
-    website1 = "http://zt.jm.com/zentao/project-story-8.json"                                        
+    website = "http://zentao/user-login.json" 
+    website1 = "http://zentao/project-story-8.json"                                        
     req=urllib2.Request(website,post_data,headers) 
     req1=urllib2.Request(website1,post_data,headers)                              
     content=opener.open(req)                                                    
